@@ -29,6 +29,10 @@ def _chunk_text(text):
     return [c for c in chunks if len(c)>50]
 
 
+def _make_id(filename,chunk_index):
+    raw="f{filename}::{chunk_index}"
+    return hashlib.md5(raw.encode()).hexdigest()
+
 def ingest_document(contents,filename):
     text=parse_text(contents,filename)
     if not text.strip():
