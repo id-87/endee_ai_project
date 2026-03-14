@@ -86,7 +86,7 @@ rag-doc-qa/
 ### Prerequisites
 - Docker + Docker Compose v2
 - Python 3.11+
-- OpenAI API key
+- Gemini API key (free at https://aistudio.google.com/app/apikey)
 
 ### Option 1: Docker Compose (Recommended)
 
@@ -95,8 +95,8 @@ rag-doc-qa/
 git clone https://github.com/<your-username>/rag-doc-qa
 cd rag-doc-qa
 
-# Add your OpenAI key
-export OPENAI_API_KEY=sk-...
+# Add your Gemini key
+export GEMINI_API_KEY=your-gemini-key
 
 # Start Endee + the FastAPI app
 docker compose up --build
@@ -123,7 +123,7 @@ pip install -r requirements.txt
 
 **Step 3 — Set environment variables:**
 ```bash
-export OPENAI_API_KEY=sk-...
+export GEMINI_API_KEY=your-gemini-key
 export ENDEE_HOST=http://localhost:8080/api/v1
 ```
 
@@ -179,7 +179,7 @@ Visit `http://localhost:8000/docs` to explore and test all endpoints interactive
 | API Framework | FastAPI |
 | Vector Database | **Endee** (endee-io/endee) |
 | Embeddings | sentence-transformers (`all-MiniLM-L6-v2`, 384-dim) |
-| LLM | OpenAI GPT-3.5-turbo |
+| LLM | Google Gemini 1.5 Flash (free tier) |
 | PDF Parsing | pdfplumber |
 | Containerization | Docker + Docker Compose |
 
