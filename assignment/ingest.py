@@ -26,11 +26,11 @@ def _chunk_text(text):
         end=start+CHUNK_SIZE
         chunks.append(text[start:end].strip())
         start+=CHUNK_SIZE-CHUNK_OVERLAP
-    return [c for c in chunks if len(c)>50]
+    return [c for c in chunks if len(c)>10]
 
 
 def _make_id(filename,chunk_index):
-    raw="f{filename}::{chunk_index}"
+    raw=f"{filename}::{chunk_index}"
     return hashlib.md5(raw.encode()).hexdigest()
 
 def ingest_document(contents,filename):
