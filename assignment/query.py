@@ -1,20 +1,10 @@
 import os
-import google.generativeai as genai
+from groq import Groq
 from sentence_transformers import SentenceTransformer
 from endee_client import search_vectors
 
 _embedder=SentenceTransformer("all-MiniLM-L6-v2")
-
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-_gemini_model=genai.GenerativeModel(
-    model_name="models/gemini-2.0-flash",
-    system_instruction=(
-        "You are a helpful assistant that answers questions strictly based on the provided context. "
-        "If the answer is not found in the context, say 'I don't have enough information to answer that.' "
-        "Do not make up information."
-    )
-)
-
+_groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 def build_prompt(question,context_chunks):
     context="\n\n---\n\n".join(context_chunks)
@@ -55,11 +45,14 @@ def answer_question(question, top_k: int = 5):
         }
 
     prompt = build_prompt(question, context_chunks)
-    try:
-        response = _gemini_model.generate_content(prompt)
-        answer = response.text.strip()
-    except Exception as e:
-        answer=f"LLM error: {str(e)}"
+    completion = _groq_client.chat.completions.create(
+    model="llama-3.3-70b-versatile",
+    messages=[
+        {"role": "system", "content": "Answer using only the provided context. If the answer is not found, say 'I don't have enough information to answer that.'"},
+        {"role": "user", "content": prompt}
+    ]
+)
+    answer = completion.choices[0].message.content.strip()
     return {
         "question": question,
         "answer": answer,
